@@ -30,3 +30,15 @@ body {
   font-optical-sizing: auto;
   font-style: normal;
 }
+
+.hide-scrollbar {
+  overflow-x: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* For WebKit browsers (Chrome, Safari, Opera) */
+.hide-scrollbar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

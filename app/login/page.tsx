@@ -29,7 +29,7 @@ function LogInButton() {
       setLogingIn(true);
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      router.push("/");
+      router.push("/home");
     } catch (e) {
       console.error(`Error: ${e}`);
     } finally {
@@ -41,7 +41,7 @@ function LogInButton() {
     <button
       onClick={logInWithGoogle}
       disabled={logingIn}
-        className="flex items-center justify-center gap-2 border-2 w-full max-w-xl h-16 rounded-full border-[#eee] disabled:bg-[#eee] disabled:text-black/50 cursor-pointer disabled:cursor-not-allowed hover:bg-[#eee] relative"
+        className="flex items-center justify-center gap-2 border-2 w-full max-w-xl h-16 rounded-full border-[#eee] disabled:bg-[#eee] disabled:text-black/50 cursor-pointer disabled:cursor-not-allowed hover:bg-[#eee]"
     //   className="border border-[#eee] w-full max-w-xl h-16 flex items-center justify-center gap-2 relative rounded-full cursor-pointer hover:bg-[var(--surface)] disabled:cursor-not-allowed disabled:bg-[var(--surface)] disabled:border-transparent disabled:text-gray-500"
     >
       {logingIn ? (
@@ -58,7 +58,7 @@ function LogInButton() {
 
 export function Header() {
   return (
-    <header className="w-full fixed inset-0 py-4 px-4">
+    <header className="w-full fixed inset-0 py-4 px-4 h-fit">
       <Link href="/" className="font-bold flex items-center gap-2">
         <Activity />
         <p className="font-bold text-xl">BioTune</p>
