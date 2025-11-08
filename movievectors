@@ -1,0 +1,452 @@
+[
+  {
+    "id": 1,
+    "title": "The Dark Knight",
+    "year": 2008,
+    "genre": "Action/Thriller",
+    "arousal": [0.5, 0.7, 0.8, 0.9, 0.85, 0.95],
+    "valence": [0.3, 0.2, -0.1, -0.3, -0.2, 0.1],
+    "tags": ["suspense", "tension", "intensity", "darkness", "triumph"]
+  },
+  {
+    "id": 2,
+    "title": "The Godfather",
+    "year": 1972,
+    "genre": "Crime/Drama",
+    "arousal": [0.4, 0.5, 0.6, 0.75, 0.8, 0.85],
+    "valence": [0.2, 0.1, -0.2, -0.4, -0.5, -0.3],
+    "tags": ["power", "tragedy", "tension", "melancholy", "gravity"]
+  },
+  {
+    "id": 3,
+    "title": "La La Land",
+    "year": 2016,
+    "genre": "Musical/Romance",
+    "arousal": [0.6, 0.7, 0.75, 0.65, 0.5, 0.6],
+    "valence": [0.7, 0.8, 0.9, 0.6, -0.2, 0.3],
+    "tags": ["joy", "romance", "bittersweet", "nostalgia", "hope"]
+  },
+  {
+    "id": 4,
+    "title": "The Shining",
+    "year": 1980,
+    "genre": "Horror",
+    "arousal": [0.3, 0.5, 0.7, 0.85, 0.9, 0.95],
+    "valence": [0.1, -0.2, -0.5, -0.7, -0.9, -0.8],
+    "tags": ["fear", "dread", "terror", "madness", "horror"]
+  },
+  {
+    "id": 5,
+    "title": "Toy Story",
+    "year": 1995,
+    "genre": "Animation/Family",
+    "arousal": [0.6, 0.5, 0.7, 0.8, 0.75, 0.7],
+    "valence": [0.8, 0.6, 0.4, 0.3, 0.7, 0.9],
+    "tags": ["joy", "adventure", "friendship", "heartwarming", "nostalgia"]
+  },
+  {
+    "id": 6,
+    "title": "Inception",
+    "year": 2010,
+    "genre": "Sci-Fi/Thriller",
+    "arousal": [0.6, 0.7, 0.8, 0.85, 0.9, 0.95],
+    "valence": [0.2, 0.1, 0.0, -0.1, 0.2, 0.4],
+    "tags": ["intrigue", "tension", "confusion", "wonder", "intensity"]
+  },
+  {
+    "id": 7,
+    "title": "Forrest Gump",
+    "year": 1994,
+    "genre": "Drama",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.6, 0.55],
+    "valence": [0.6, 0.7, 0.5, 0.3, -0.3, 0.6],
+    "tags": ["heartwarming", "bittersweet", "nostalgia", "hope", "melancholy"]
+  },
+  {
+    "id": 8,
+    "title": "Pulp Fiction",
+    "year": 1994,
+    "genre": "Crime/Drama",
+    "arousal": [0.7, 0.8, 0.75, 0.85, 0.7, 0.65],
+    "valence": [0.3, 0.0, -0.2, 0.1, 0.2, 0.4],
+    "tags": ["intensity", "absurdity", "tension", "dark humor", "chaos"]
+  },
+  {
+    "id": 9,
+    "title": "Titanic",
+    "year": 1997,
+    "genre": "Romance/Drama",
+    "arousal": [0.5, 0.6, 0.7, 0.85, 0.9, 0.7],
+    "valence": [0.6, 0.8, 0.9, 0.4, -0.6, -0.4],
+    "tags": ["romance", "tragedy", "passion", "heartbreak", "loss"]
+  },
+  {
+    "id": 10,
+    "title": "The Matrix",
+    "year": 1999,
+    "genre": "Sci-Fi/Action",
+    "arousal": [0.6, 0.75, 0.85, 0.9, 0.85, 0.95],
+    "valence": [0.0, 0.2, 0.4, 0.5, 0.6, 0.7],
+    "tags": ["wonder", "intensity", "liberation", "empowerment", "tension"]
+  },
+  {
+    "id": 11,
+    "title": "Schindler's List",
+    "year": 1993,
+    "genre": "Drama/History",
+    "arousal": [0.4, 0.6, 0.7, 0.75, 0.8, 0.65],
+    "valence": [-0.5, -0.7, -0.8, -0.6, -0.3, 0.2],
+    "tags": ["sorrow", "tragedy", "horror", "hope", "gravity"]
+  },
+  {
+    "id": 12,
+    "title": "The Avengers",
+    "year": 2012,
+    "genre": "Action/Superhero",
+    "arousal": [0.6, 0.7, 0.75, 0.85, 0.9, 0.95],
+    "valence": [0.5, 0.4, 0.3, 0.5, 0.7, 0.9],
+    "tags": ["excitement", "triumph", "teamwork", "intensity", "joy"]
+  },
+  {
+    "id": 13,
+    "title": "Jurassic Park",
+    "year": 1993,
+    "genre": "Adventure/Sci-Fi",
+    "arousal": [0.5, 0.7, 0.8, 0.9, 0.85, 0.75],
+    "valence": [0.7, 0.5, 0.2, -0.3, 0.0, 0.5],
+    "tags": ["wonder", "fear", "excitement", "terror", "awe"]
+  },
+  {
+    "id": 14,
+    "title": "The Lion King",
+    "year": 1994,
+    "genre": "Animation/Family",
+    "arousal": [0.6, 0.7, 0.5, 0.7, 0.8, 0.75],
+    "valence": [0.8, -0.6, 0.3, 0.5, 0.6, 0.9],
+    "tags": ["joy", "tragedy", "hope", "triumph", "heartwarming"]
+  },
+  {
+    "id": 15,
+    "title": "Fight Club",
+    "year": 1999,
+    "genre": "Drama/Thriller",
+    "arousal": [0.5, 0.6, 0.75, 0.85, 0.9, 0.95],
+    "valence": [-0.3, -0.2, 0.1, -0.1, -0.4, -0.2],
+    "tags": ["chaos", "rebellion", "intensity", "darkness", "confusion"]
+  },
+  {
+    "id": 16,
+    "title": "Goodfellas",
+    "year": 1990,
+    "genre": "Crime/Drama",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+    "valence": [0.5, 0.6, 0.4, 0.1, -0.3, -0.6],
+    "tags": ["exhilaration", "tension", "paranoia", "tragedy", "intensity"]
+  },
+  {
+    "id": 17,
+    "title": "Star Wars: A New Hope",
+    "year": 1977,
+    "genre": "Sci-Fi/Adventure",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+    "valence": [0.3, 0.5, 0.6, 0.7, 0.8, 0.9],
+    "tags": ["adventure", "hope", "triumph", "wonder", "excitement"]
+  },
+  {
+    "id": 18,
+    "title": "The Silence of the Lambs",
+    "year": 1991,
+    "genre": "Thriller/Horror",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+    "valence": [-0.3, -0.4, -0.5, -0.6, -0.4, 0.1],
+    "tags": ["fear", "suspense", "dread", "intensity", "tension"]
+  },
+  {
+    "id": 19,
+    "title": "Saving Private Ryan",
+    "year": 1998,
+    "genre": "War/Drama",
+    "arousal": [0.9, 0.7, 0.65, 0.75, 0.85, 0.8],
+    "valence": [-0.7, -0.3, 0.2, -0.2, -0.4, 0.3],
+    "tags": ["horror", "tragedy", "sacrifice", "intensity", "honor"]
+  },
+  {
+    "id": 20,
+    "title": "The Notebook",
+    "year": 2004,
+    "genre": "Romance/Drama",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.6, 0.55],
+    "valence": [0.7, 0.8, 0.5, 0.3, -0.5, 0.4],
+    "tags": ["romance", "passion", "heartbreak", "bittersweet", "love"]
+  },
+  {
+    "id": 21,
+    "title": "The Exorcist",
+    "year": 1973,
+    "genre": "Horror",
+    "arousal": [0.4, 0.6, 0.75, 0.85, 0.9, 0.95],
+    "valence": [-0.2, -0.5, -0.7, -0.9, -0.8, -0.4],
+    "tags": ["terror", "dread", "horror", "fear", "distress"]
+  },
+  {
+    "id": 22,
+    "title": "Interstellar",
+    "year": 2014,
+    "genre": "Sci-Fi/Drama",
+    "arousal": [0.5, 0.6, 0.7, 0.8, 0.85, 0.75],
+    "valence": [0.1, 0.0, -0.2, 0.3, 0.6, 0.7],
+    "tags": ["awe", "melancholy", "wonder", "hope", "intensity"]
+  },
+  {
+    "id": 23,
+    "title": "The Shawshank Redemption",
+    "year": 1994,
+    "genre": "Drama",
+    "arousal": [0.4, 0.5, 0.55, 0.6, 0.7, 0.75],
+    "valence": [-0.3, -0.2, 0.1, 0.3, 0.6, 0.9],
+    "tags": ["hope", "perseverance", "friendship", "triumph", "liberation"]
+  },
+  {
+    "id": 24,
+    "title": "Frozen",
+    "year": 2013,
+    "genre": "Animation/Family",
+    "arousal": [0.6, 0.5, 0.7, 0.75, 0.8, 0.7],
+    "valence": [0.6, -0.3, 0.2, 0.5, 0.7, 0.9],
+    "tags": ["joy", "fear", "love", "empowerment", "hope"]
+  },
+  {
+    "id": 25,
+    "title": "Gladiator",
+    "year": 2000,
+    "genre": "Action/Drama",
+    "arousal": [0.7, 0.75, 0.7, 0.8, 0.85, 0.9],
+    "valence": [0.3, -0.5, -0.3, 0.2, 0.4, 0.6],
+    "tags": ["intensity", "tragedy", "vengeance", "honor", "triumph"]
+  },
+  {
+    "id": 26,
+    "title": "The Hangover",
+    "year": 2009,
+    "genre": "Comedy",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.75, 0.7],
+    "valence": [0.5, 0.3, 0.6, 0.7, 0.8, 0.9],
+    "tags": ["humor", "chaos", "absurdity", "joy", "relief"]
+  },
+  {
+    "id": 27,
+    "title": "Get Out",
+    "year": 2017,
+    "genre": "Horror/Thriller",
+    "arousal": [0.5, 0.6, 0.75, 0.85, 0.9, 0.95],
+    "valence": [0.2, -0.1, -0.4, -0.7, -0.5, 0.3],
+    "tags": ["suspense", "fear", "tension", "dread", "intensity"]
+  },
+  {
+    "id": 28,
+    "title": "Coco",
+    "year": 2017,
+    "genre": "Animation/Family",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.6, 0.65],
+    "valence": [0.6, 0.5, 0.3, -0.2, 0.5, 0.9],
+    "tags": ["joy", "family", "bittersweet", "love", "heartwarming"]
+  },
+  {
+    "id": 29,
+    "title": "Parasite",
+    "year": 2019,
+    "genre": "Thriller/Drama",
+    "arousal": [0.5, 0.6, 0.7, 0.8, 0.9, 0.85],
+    "valence": [0.4, 0.5, 0.3, -0.2, -0.6, -0.4],
+    "tags": ["tension", "anxiety", "chaos", "shock", "darkness"]
+  },
+  {
+    "id": 30,
+    "title": "A Quiet Place",
+    "year": 2018,
+    "genre": "Horror/Thriller",
+    "arousal": [0.7, 0.75, 0.8, 0.85, 0.9, 0.85],
+    "valence": [-0.3, -0.4, -0.5, -0.3, 0.2, 0.4],
+    "tags": ["suspense", "fear", "tension", "love", "intensity"]
+  },
+  {
+    "id": 31,
+    "title": "Black Panther",
+    "year": 2018,
+    "genre": "Action/Superhero",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+    "valence": [0.6, 0.5, 0.3, 0.4, 0.7, 0.8],
+    "tags": ["empowerment", "intensity", "pride", "conflict", "triumph"]
+  },
+  {
+    "id": 32,
+    "title": "Jaws",
+    "year": 1975,
+    "genre": "Thriller/Horror",
+    "arousal": [0.5, 0.6, 0.75, 0.85, 0.9, 0.95],
+    "valence": [0.5, 0.2, -0.3, -0.5, -0.4, 0.6],
+    "tags": ["suspense", "fear", "terror", "intensity", "relief"]
+  },
+  {
+    "id": 33,
+    "title": "Up",
+    "year": 2009,
+    "genre": "Animation/Family",
+    "arousal": [0.6, 0.4, 0.6, 0.7, 0.75, 0.7],
+    "valence": [0.8, -0.7, 0.4, 0.6, 0.7, 0.9],
+    "tags": ["joy", "heartbreak", "adventure", "hope", "bittersweet"]
+  },
+  {
+    "id": 34,
+    "title": "The Departed",
+    "year": 2006,
+    "genre": "Crime/Thriller",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+    "valence": [0.2, 0.0, -0.2, -0.3, -0.5, -0.7],
+    "tags": ["tension", "paranoia", "intensity", "tragedy", "suspense"]
+  },
+  {
+    "id": 35,
+    "title": "Casablanca",
+    "year": 1942,
+    "genre": "Romance/Drama",
+    "arousal": [0.4, 0.5, 0.6, 0.65, 0.7, 0.65],
+    "valence": [0.3, 0.5, 0.6, 0.2, -0.3, 0.4],
+    "tags": ["romance", "melancholy", "nostalgia", "bittersweet", "sacrifice"]
+  },
+  {
+    "id": 36,
+    "title": "Mad Max: Fury Road",
+    "year": 2015,
+    "genre": "Action/Adventure",
+    "arousal": [0.8, 0.85, 0.9, 0.95, 0.9, 0.95],
+    "valence": [0.1, 0.2, 0.4, 0.5, 0.6, 0.7],
+    "tags": ["intensity", "chaos", "exhilaration", "triumph", "adrenaline"]
+  },
+  {
+    "id": 37,
+    "title": "E.T. the Extra-Terrestrial",
+    "year": 1982,
+    "genre": "Sci-Fi/Family",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.6, 0.65],
+    "valence": [0.7, 0.6, 0.4, -0.4, 0.6, 0.9],
+    "tags": ["wonder", "friendship", "heartbreak", "joy", "hope"]
+  },
+  {
+    "id": 38,
+    "title": "Blade Runner 2049",
+    "year": 2017,
+    "genre": "Sci-Fi",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.75, 0.8],
+    "valence": [-0.2, -0.1, 0.0, 0.2, 0.1, 0.3],
+    "tags": ["melancholy", "wonder", "intrigue", "contemplation", "awe"]
+  },
+  {
+    "id": 39,
+    "title": "Superbad",
+    "year": 2007,
+    "genre": "Comedy",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.75, 0.7],
+    "valence": [0.6, 0.7, 0.8, 0.7, 0.8, 0.9],
+    "tags": ["humor", "joy", "chaos", "friendship", "nostalgia"]
+  },
+  {
+    "id": 40,
+    "title": "The Grand Budapest Hotel",
+    "year": 2014,
+    "genre": "Comedy/Drama",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.65, 0.6],
+    "valence": [0.6, 0.5, 0.4, 0.3, 0.2, 0.5],
+    "tags": ["whimsy", "melancholy", "charm", "nostalgia", "bittersweet"]
+  },
+  {
+    "id": 41,
+    "title": "Hereditary",
+    "year": 2018,
+    "genre": "Horror",
+    "arousal": [0.5, 0.7, 0.8, 0.85, 0.9, 0.95],
+    "valence": [-0.3, -0.6, -0.7, -0.8, -0.9, -0.8],
+    "tags": ["dread", "terror", "grief", "horror", "despair"]
+  },
+  {
+    "id": 42,
+    "title": "Moonlight",
+    "year": 2016,
+    "genre": "Drama",
+    "arousal": [0.4, 0.5, 0.55, 0.6, 0.65, 0.6],
+    "valence": [-0.2, -0.1, 0.1, 0.3, 0.4, 0.6],
+    "tags": ["melancholy", "introspection", "tenderness", "identity", "hope"]
+  },
+  {
+    "id": 43,
+    "title": "Django Unchained",
+    "year": 2012,
+    "genre": "Western/Action",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.9],
+    "valence": [-0.3, 0.1, 0.4, 0.6, 0.7, 0.8],
+    "tags": ["intensity", "vengeance", "empowerment", "triumph", "justice"]
+  },
+  {
+    "id": 44,
+    "title": "Whiplash",
+    "year": 2014,
+    "genre": "Drama",
+    "arousal": [0.6, 0.7, 0.8, 0.85, 0.9, 0.95],
+    "valence": [-0.2, -0.3, -0.4, -0.3, 0.2, 0.5],
+    "tags": ["intensity", "obsession", "tension", "triumph", "pain"]
+  },
+  {
+    "id": 45,
+    "title": "Spirited Away",
+    "year": 2001,
+    "genre": "Animation/Fantasy",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.75, 0.7],
+    "valence": [0.3, 0.2, 0.4, 0.6, 0.7, 0.9],
+    "tags": ["wonder", "adventure", "fear", "growth", "joy"]
+  },
+  {
+    "id": 46,
+    "title": "The Social Network",
+    "year": 2010,
+    "genre": "Drama",
+    "arousal": [0.6, 0.65, 0.7, 0.75, 0.7, 0.65],
+    "valence": [0.2, 0.0, -0.1, -0.2, -0.3, -0.1],
+    "tags": ["ambition", "betrayal", "tension", "isolation", "intensity"]
+  },
+  {
+    "id": 47,
+    "title": "Everything Everywhere All at Once",
+    "year": 2022,
+    "genre": "Sci-Fi/Comedy",
+    "arousal": [0.7, 0.8, 0.85, 0.9, 0.85, 0.8],
+    "valence": [0.3, 0.0, -0.2, 0.4, 0.7, 0.9],
+    "tags": ["chaos", "absurdity", "love", "hope", "wonder"]
+  },
+  {
+    "id": 48,
+    "title": "No Country for Old Men",
+    "year": 2007,
+    "genre": "Thriller/Western",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.85, 0.7],
+    "valence": [-0.1, -0.3, -0.4, -0.5, -0.6, -0.4],
+    "tags": ["tension", "dread", "nihilism", "intensity", "darkness"]
+  },
+  {
+    "id": 49,
+    "title": "The Princess Bride",
+    "year": 1987,
+    "genre": "Fantasy/Adventure",
+    "arousal": [0.6, 0.7, 0.75, 0.8, 0.75, 0.7],
+    "valence": [0.7, 0.6, 0.7, 0.8, 0.9, 0.95],
+    "tags": ["adventure", "romance", "humor", "joy", "triumph"]
+  },
+  {
+    "id": 50,
+    "title": "Arrival",
+    "year": 2016,
+    "genre": "Sci-Fi/Drama",
+    "arousal": [0.5, 0.6, 0.65, 0.7, 0.75, 0.7],
+    "valence": [0.1, 0.0, 0.2, 0.4, 0.6, 0.8],
+    "tags": ["wonder", "melancholy", "intrigue", "hope", "bittersweet"]
+  }
+]
