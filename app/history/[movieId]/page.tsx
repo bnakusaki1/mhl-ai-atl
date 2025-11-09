@@ -42,7 +42,7 @@ export default function MovieHistory({
     } finally {
       setFetchingSessions(false);
     }
-  }, []);
+  }, [movieId]);
 
   useEffect(() => {
     if (!sessions) fetchSessions();

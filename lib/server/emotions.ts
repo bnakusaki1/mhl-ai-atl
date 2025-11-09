@@ -182,7 +182,7 @@ export async function getWatchSessionById(
     .collection("Sessions")
     .doc(sessionId)
     .collection("Emotions")
-    .orderBy("capturedAt", "desc")
+    .orderBy("timestamp")
     .get();
 
   const emotions: EmotionDataPoint[] = emotionsSnapshot.docs.map(

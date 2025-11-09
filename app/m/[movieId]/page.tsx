@@ -4,6 +4,7 @@ import { auth, db } from "@/firebase.config";
 import {
   createWatchSession,
   EmotionDataPoint,
+  endWatchSession,
   saveEmotionDataPoint,
 } from "@/lib/server/emotions";
 import {
@@ -86,6 +87,12 @@ export default function MoviePage({
     }
   }, []);
 
+  const onVideoComplete = useCallback(async () => {
+    console.log("complete");
+    if (sessionId) await endWatchSession(sessionId);
+    console.log("Sesssion concluded");
+  }, []);
+
   useEffect(() => {
     if (isPlaying) {
       onStart();
@@ -137,6 +144,7 @@ export default function MoviePage({
       setIsPlaying(false);
     } else if (event.data === window.YT.PlayerState.ENDED) {
       setIsPlaying(false);
+      onVideoComplete(); // Call the completion function
     }
   };
 
@@ -343,7 +351,10 @@ export default function MoviePage({
             left: emotionBoxRect.right + 40,
           }}
         >
-          <p className="font-semibold">AI Reasoning&nbsp;<span className="text-black/70">(For predicted emotion)</span></p>
+          <p className="font-semibold">
+            AI Reasoning&nbsp;
+            <span className="text-black/70">(For predicted emotion)</span>
+          </p>
           <AnimatePresence initial={false} mode="wait">
             <motion.p
               initial={{ opacity: 0 }}
