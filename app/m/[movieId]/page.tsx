@@ -72,7 +72,7 @@ export default function MoviePage({
   const onStart = useCallback(async () => {
     try {
       if (isPlaying) return;
-      await fetch("localhost:5000/start", { method: "post" });
+      await fetch("http://localhost:5000/start", { method: "POST" });
     } catch (e) {
       console.log(`Failed to start heart rate sensor: ${e}`);
     }
@@ -81,7 +81,7 @@ export default function MoviePage({
   const onStop = useCallback(async () => {
     try {
       if (!isPlaying) return;
-      await fetch("localhost:5000/stop", { method: "post" });
+      await fetch("http://localhost:5000/stop", { method: "POST" });
     } catch (e) {
       console.log(`Failed to stop heart rate sensor: ${e}`);
     }
@@ -164,33 +164,10 @@ export default function MoviePage({
   }, []);
 
   useEffect(() => {
-    const unsubscribe = listenToDocument(
-      db,
-      "BPMReadings",
-      "readings",
-      (update) => {
-        console.log(update);
-      }
-    );
-
-    return () => unsubscribe();
-  }, []);
-
-  const [delta, setDelta] = useState(0);
-  const [contextualEmotionResponse, setContextualEmotionResponse] =
-    useState<ContextualEmotionResult>();
-  const [currentBpm, setCurrentBpm] = useState<number>(0);
-  const [data, setData] = useState<HeartRateData[]>([]);
-  const maxDataPoints = 30; // Keep last 30 readings
-
-  // Simulate receiving live heart rate data
-  useEffect(() => {
-    if (!isPlaying) return;
-
-    const interval = setInterval(() => {
-      // Simulate heart rate data (replace with your actual data source)
+    const unsubscribe = listenToDocument((bpm) => {
+      if (!isPlaying) return;
+      console.log(`Update ${bpm}`);
       const now = Date.now();
-      const bpm = Math.floor(Math.random() * (100 - 60) + 60); // Random BPM between 60-100
 
       const newDataPoint: HeartRateData = {
         timestamp: new Date(now).toLocaleTimeString(),
@@ -204,6 +181,7 @@ export default function MoviePage({
       ) {
         setDelta(bpm - currentBpm);
       }
+
       setCurrentBpm(bpm);
 
       setData((prevData) => {
@@ -211,10 +189,17 @@ export default function MoviePage({
         // Keep only the last N data points
         return updated.slice(-maxDataPoints);
       });
-    }, 2000); // Update every 2 seconds
+    });
 
-    return () => clearInterval(interval);
+    return () => unsubscribe();
   }, [isPlaying]);
+
+  const [delta, setDelta] = useState(0);
+  const [contextualEmotionResponse, setContextualEmotionResponse] =
+    useState<ContextualEmotionResult>();
+  const [currentBpm, setCurrentBpm] = useState<number>(0);
+  const [data, setData] = useState<HeartRateData[]>([]);
+  const maxDataPoints = 30; // Keep last 30 readings
 
   useEffect(() => {
     if (Math.abs(delta) >= 10) {

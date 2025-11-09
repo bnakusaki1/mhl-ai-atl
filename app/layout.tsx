@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "BioTune",
@@ -24,6 +25,7 @@ export default function RootLayout({
       <body className={`urbanist antialiased`}>
         <Header />
         {children}
+        <Footer />
       </body>
     </html>
   );

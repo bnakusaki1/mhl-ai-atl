@@ -75,23 +75,29 @@ export default function MovieHistory({
               Watch sessions
             </p>
           </div>
-          <div className="grid grid-cols-3 gap-5">
+          <div className="grid grid-cols-2 gap-5">
             {sessions.map((session, index) => (
-              <Link href={`/history/${movieId}/${session.id}`} key={index}>
-                <p>
-                  {new Date(session.startTime).toDateString()}
-                  &nbsp;|&nbsp;
-                  {new Date(session.startTime).toLocaleTimeString()}
-                </p>
-                <p>
-                  {session.averageBPM}
-                </p>
-                <p>
-                  {session.dominantEmotion}
-                </p>
-                <p>
-                  {session.duration}
-                </p>
+              <Link
+                href={`/history/${movieId}/${session.id}`}
+                key={index}
+                className="bg-black/5 rounded-3xl  p-4 hover:bg-black/10"
+              >
+                <div className="flex justify-between">
+                  <p className="font-semibold">Started on:&nbsp;</p>
+                  <p>
+                    {new Date(session.startTime).toDateString()}
+                    &nbsp;|&nbsp;
+                    {new Date(session.startTime).toLocaleTimeString()}
+                  </p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="font-semibold">Average BPM:&nbsp;</p>
+                  <p>{session.averageBPM || "N/A"}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="font-semibold">Dominant emotion:&nbsp;</p>
+                  <p>{session.dominantEmotion || "N/A"}</p>
+                </div>
               </Link>
             ))}
           </div>
