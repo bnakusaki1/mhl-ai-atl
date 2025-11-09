@@ -83,6 +83,15 @@ export default function MovieHistory({
                   &nbsp;|&nbsp;
                   {new Date(session.startTime).toLocaleTimeString()}
                 </p>
+                <p>
+                  {session.averageBPM}
+                </p>
+                <p>
+                  {session.dominantEmotion}
+                </p>
+                <p>
+                  {session.duration}
+                </p>
               </Link>
             ))}
           </div>
