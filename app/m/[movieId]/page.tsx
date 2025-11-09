@@ -3,8 +3,10 @@
 import { Icons } from "@/public/assets";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
-import { use, useCallback, useEffect, useRef, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { LiveHeartRateGraph } from "./components/Graph";
+import { addToUserHistory } from "@/lib/server/history";
+import { auth } from "@/firebase.config";
 
 // Extend Window type for YouTube API
 declare global {
@@ -25,11 +27,21 @@ export default function MoviePage({
   const [playerState, setPlayerState] = useState<string>("Unstarted");
 
   const onStart = useCallback(async () => {
-    await fetch("localhost:5000/start", { method: "post" });
+    try {
+      if (isPlaying) return;
+      await fetch("localhost:5000/start", { method: "post" });
+    } catch (e) {
+      console.log(`Failed to start heart rate sensor: ${e}`);
+    }
   }, []);
 
   const onStop = useCallback(async () => {
-    await fetch("localhost:5000/stop", { method: "post" });
+    try {
+      if (!isPlaying) return;
+      await fetch("localhost:5000/stop", { method: "post" });
+    } catch (e) {
+      console.log(`Failed to stop heart rate sensor: ${e}`);
+    }
   }, []);
 
   useEffect(() => {
@@ -98,6 +110,21 @@ export default function MoviePage({
     }
   };
 
+  useMemo(() => {
+    const addToHistory = async () => {
+      console.log("Adding to history");
+      await auth.authStateReady();
+
+      if (auth.currentUser) {
+        console.log(`Found user: ${auth.currentUser.uid}`);
+        await addToUserHistory(auth.currentUser.uid, movieId);
+        console.log("Added to history");
+      }
+    };
+
+    addToHistory();
+  }, []);
+
   return (
     <main className="pt-20 w-full max-w-5xl mx-auto pb-20">
       <div className="mb-10 flex items-center justify-between w-full">
@@ -131,19 +158,6 @@ export default function MoviePage({
           </p>
         </div>
       </div>
-
-      {/* Player Status Indicator */}
-      <div className="mb-4 flex items-center gap-2">
-        <div
-          className={`w-3 h-3 rounded-full ${
-            isPlaying ? "bg-green-500" : "bg-red-500"
-          }`}
-        />
-        <span className="text-sm font-medium">
-          Player Status: {playerState}
-        </span>
-      </div>
-
       <div className="pt-5 w-full aspect-video rounded-3xl overflow-hidden bg-black/5">
         <iframe
           id="youtube-player"

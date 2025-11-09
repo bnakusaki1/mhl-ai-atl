@@ -37,6 +37,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 gap-5 pt-5">
             {promotedMovies.map((movie, index) => (
               <div
+                key={index}
                 onClick={() => {
                   router.push(`/m/${movie.movieId}`);
                 }}

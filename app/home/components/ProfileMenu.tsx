@@ -1,42 +1,17 @@
 "use client";
 
+import Image from "next/image";
 import { auth } from "@/firebase.config";
+import { History } from "@/lib/server/history";
 import { Movie } from "@/lib/server/movies";
 import { AnimatePresence, motion } from "framer-motion";
-import { History, Menu, X } from "lucide-react";
+import { History as HistoryIcon, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
-export function AppProfileMenu() {
+export function AppProfileMenu({ history }: { history: History[] }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const histories: HistoryItem[] = [
-    {
-      movie: {
-        movieId: "",
-        title: "Sinners",
-        thumbnailPath: "",
-      },
-      watchedOn: "Nov 8, 2025 11:52AM",
-    },
-    {
-      movie: {
-        movieId: "",
-        title: "IT",
-        thumbnailPath: "",
-      },
-      watchedOn: "Nov 10, 2025 11:52AM",
-    },
-    {
-      movie: {
-        movieId: "",
-        title: "Morbius",
-        thumbnailPath: "",
-      },
-      watchedOn: "Dec 8, 2025 11:52AM",
-    },
-  ];
 
   return (
     <>
@@ -74,7 +49,7 @@ export function AppProfileMenu() {
       <AnimatePresence>
         {isMenuOpen && (
           <AgentPageHeaderMenu
-            menuItems={histories}
+            menuItems={history}
             onClose={() => setIsMenuOpen(false)}
           />
         )}
@@ -87,7 +62,7 @@ function AgentPageHeaderMenu({
   menuItems,
   onClose,
 }: {
-  menuItems: HistoryItem[];
+  menuItems: History[];
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -159,7 +134,7 @@ function AgentPageHeaderMenu({
           </div>
           <div className="flex items-center justify-between gap-2 px-4 pt-4">
             <div className="flex items-center gap-2">
-              <History size={20} />
+              <HistoryIcon size={20} />
               <p className="font-semibold text-lg">Watch history</p>
             </div>
             <Link
@@ -173,20 +148,44 @@ function AgentPageHeaderMenu({
             </Link>
           </div>
           <div className="px-2 pb-5 pt-4">
-            {menuItems.map((item, index) => (
-              <button
-                key={index}
-                className="w-full px-[10px] py-2 h-13 w-full cursor-pointer flex items-center gap-4 hover:bg-black/5 cursor-pointer"
-              >
-                <div className="aspect-video h-full bg-black/5"></div>
-                <div className="flex flex-col items-start">
-                  <p className="font-semibold">{item.movie.title}</p>
-                  <p className="font-semibold text-sm text-black/70">
-                    {item.watchedOn}
-                  </p>
-                </div>
-              </button>
-            ))}
+            {menuItems.length === 0 ? (
+              <p className="text-center font-semibold text-black/50">
+                You have no history.
+              </p>
+            ) : (
+              (menuItems.length < 3 ? menuItems : menuItems.slice(0, 3)).map(
+                (item, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      router.push(`/history/${item.movieId}`);
+                      onClose();
+                    }}
+                    className="w-full px-[10px] py-2 h-13 w-full cursor-pointer flex items-center gap-3 hover:bg-black/5 cursor-pointer overflow-hidden"
+                  >
+                    <div className="aspect-video h-full bg-black/5 rounded-sm overflow-hidden">
+                      <Image
+                        width={1000}
+                        height={1000}
+                        alt=""
+                        src={item.thumbnailPath}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="flex flex-col items-start w-10">
+                      <p className="font-bold text-sm whitespace-nowrap overflow-hidden text-ellipsis">
+                        {item.movieTitle}
+                      </p>
+                      <p className="font-semibold text-xs text-black/70 whitespace-nowrap overflow-hidden text-ellipsis">
+                        {new Date(item.watchedOnMillis).toDateString()}
+                        &nbsp;|&nbsp;
+                        {new Date(item.watchedOnMillis).toLocaleTimeString()}
+                      </p>
+                    </div>
+                  </button>
+                )
+              )
+            )}
           </div>
         </div>
       </motion.nav>
