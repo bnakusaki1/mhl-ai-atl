@@ -17,3 +17,13 @@ export async function getPromotedMovies(): Promise<Movie[]> {
 
   return querySnapshot.docs.map((doc) => doc.data() as Movie);
 }
+
+export async function getMovieById(movieId: string): Promise<Movie> {
+  const docSnapshot = await initAdmin()
+    .firestore()
+    .collection("PromotedMovies")
+    .doc(movieId)
+    .get();
+
+  return docSnapshot.data() as Movie;
+}

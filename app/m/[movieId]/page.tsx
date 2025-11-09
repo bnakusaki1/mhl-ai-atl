@@ -12,6 +12,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { listenToDocument } from "./actions";
 import { HeartRateData, LiveHeartRateGraph } from "./components/Graph";
+import {
+  createWatchSession,
+  EmotionDataPoint,
+  saveEmotionDataPoint,
+} from "@/lib/server/emotions";
 
 // Extend Window type for YouTube API
 declare global {
@@ -26,17 +31,42 @@ export default function MoviePage({
 }: {
   params: Promise<{ movieId: string }>;
 }) {
+  const [creatingWatchSession, setCreatingWatchSession] = useState(false);
+  const [sessionId, setSessionId] = useState<string>();
   const { movieId } = use(params);
   const playerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [emotionBoxRect, setEmotionBoxRect] = useState<DOMRect>();
+  const [lastEmotionsResponeAtMillis, setLastEmotionsResponeAtMillis] =
+    useState<number>();
+
+  const onCreateWatchSession = useCallback(async () => {
+    try {
+      await auth.authStateReady();
+      if (auth.currentUser) {
+        const sessionId = await createWatchSession(
+          auth.currentUser.uid,
+          movieId
+        );
+        setSessionId(sessionId);
+      }
+    } catch (e) {
+      console.log(`Failed to create watch session: ${e}`);
+    } finally {
+      setCreatingWatchSession(false);
+    }
+  }, [movieId]);
 
   useEffect(() => {
-    const profileButton = document.getElementById("emotion box");
-    if (profileButton) {
-      setEmotionBoxRect(profileButton.getBoundingClientRect());
+    if (!sessionId && !creatingWatchSession) onCreateWatchSession();
+  }, [sessionId, creatingWatchSession]);
+
+  useEffect(() => {
+    const emotionBox = document.getElementById("emotion box");
+    if (emotionBox) {
+      setEmotionBoxRect(emotionBox.getBoundingClientRect());
     }
-  }, [window.innerWidth, window.innerHeight]);
+  }, []);
 
   const onStart = useCallback(async () => {
     try {
@@ -160,7 +190,12 @@ export default function MoviePage({
         time: now,
       };
 
-      setDelta(bpm - currentBpm);
+      if (
+        !lastEmotionsResponeAtMillis ||
+        Date.now() - lastEmotionsResponeAtMillis >= 10000
+      ) {
+        setDelta(bpm - currentBpm);
+      }
       setCurrentBpm(bpm);
 
       setData((prevData) => {
@@ -175,6 +210,12 @@ export default function MoviePage({
 
   useEffect(() => {
     if (Math.abs(delta) >= 10) {
+      if (
+        lastEmotionsResponeAtMillis &&
+        Date.now() - lastEmotionsResponeAtMillis < 10000
+      ) {
+        return;
+      }
       const analyze = async () => {
         // Get current video timestamp from YouTube player
         let videoTimestamp = 0;
@@ -187,14 +228,32 @@ export default function MoviePage({
         }
 
         console.log(`Video timestamp: ${videoTimestamp}`);
+        const bpm = currentBpm;
 
         const emotionalResponse = await analyzeWithVideoContext({
           videoUrl: `https://www.youtube.com/embed/${movieId}?enablejsapi=1`,
-          currentBPM: currentBpm,
+          currentBPM: bpm,
           recentBPMHistory: data.map((point) => point.bpm),
           timestamp: videoTimestamp,
         });
         setContextualEmotionResponse(emotionalResponse);
+        setLastEmotionsResponeAtMillis(Date.now());
+
+        if (sessionId) {
+          const emotionDataPoint: EmotionDataPoint = {
+            timestamp: videoTimestamp,
+            emotion: emotionalResponse.emotion,
+            arousal: emotionalResponse.arousal,
+            valence: emotionalResponse.valence,
+            bpm: bpm,
+            sceneDescription: emotionalResponse.sceneDescription,
+            reasoning: emotionalResponse.reasoning,
+            confidence: emotionalResponse.confidence,
+            capturedAt: Date.now(),
+          };
+
+          await saveEmotionDataPoint(sessionId, emotionDataPoint);
+        }
 
         console.log(emotionalResponse);
       };
@@ -202,6 +261,14 @@ export default function MoviePage({
       analyze();
     }
   }, [delta]);
+
+  if (creatingWatchSession) {
+    return (
+      <div className="w-full h-full min-h-[calc(100svh-80px)] flex items-center justify-center">
+        <Icon icon={Icons.loading} />
+      </div>
+    );
+  }
 
   return (
     <main className="pt-20 w-full max-w-5xl mx-auto pb-20">
@@ -224,7 +291,7 @@ export default function MoviePage({
           </motion.div>
           <div>
             <p className="font-bold text-4xl leading-none">
-              {currentBpm ? `${currentBpm} BPM` : "N/A"}{" "}
+              {currentBpm ? `${currentBpm} BPM` : "No value"}{" "}
             </p>
             <p className="leading-none font-medium text-black/50 mt-[1px]">
               Heart rate
@@ -245,7 +312,7 @@ export default function MoviePage({
             {contextualEmotionResponse
               ? contextualEmotionResponse.emotion.charAt(0).toUpperCase() +
                 contextualEmotionResponse.emotion.slice(1)
-              : "N/A"}
+              : "No value"}
           </p>
           <p className="leading-none font-medium text-black/50 text-right">
             Emotion detected
@@ -270,13 +337,13 @@ export default function MoviePage({
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="p-4 bg-black/5 fixed w-64 rounded-3xl"
+          className="p-4 bg-black/5 fixed w-80 rounded-3xl"
           style={{
             top: emotionBoxRect.top,
-            left: emotionBoxRect.right + 40
+            left: emotionBoxRect.right + 40,
           }}
         >
-          <p className="font-semibold">AI Reasoning</p>
+          <p className="font-semibold">AI Reasoning&nbsp;<span className="text-black/70">(For predicted emotion)</span></p>
           <AnimatePresence initial={false} mode="wait">
             <motion.p
               initial={{ opacity: 0 }}
