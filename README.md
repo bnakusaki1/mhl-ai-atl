@@ -1,12 +1,11 @@
-#**BioTune**- The next innovation in entertainment analysis
-**==================================================================================================================================**
+# **BioTune**- The next innovation in entertainment analysis
 
 ## Introduction: 
-**---------------------------------------------------------------------------------------------------------------------------------**
+
 ### Our tool, BioTune, allows users to watch different forms of media and track their beats per minute live. This is possible with a heart rate tracker. Additionally, with the use of the Gemini API we are able to compute different emotions based on bpm variations and spikes. A built in dashboard will present the emotion data afterwards. How can you see what you watched before? A history feature that allows you to relive those emotions. In short, we've helped viewers (and studios) pinpoit what sparks the best reactions!
 
 ## Built With:
-**---------------------------------------------------------------------------------------------------------------------------------**
+
 <p>
   <a href="https://nextjs.org/">
     <img alt="Next.js" src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white">
@@ -41,7 +40,7 @@
 </p>
 
 ## Features:
-**---------------------------------------------------------------------------------------------------------------------------------**
+
 ### Login Page
 ![Login Page](screenshots/LoginPage.png)
 
@@ -52,7 +51,7 @@
 ![Video Page](screenshots/VideoPage.png)
 
 ## How to Build This Yourself
-**---------------------------------------------------------------------------------------------------------------------------------**
+
 
 ### Before you start:
 - **Node.js** 18+ and npm installed
@@ -104,4 +103,4 @@ Next.js • Firebase • Gemini AI • Framer Motion
   <img src="https://contrib.rocks/image?repo=bnakusaki1/mhl-ai-atl" />
 </a>
 
-## Full Team - Benjamin Nakusaki, Jaeyoung Choi, Jalani Bandele, Jason Nguyen
+## Full Team - Benjamin N Akusaki, Jaeyoung Choi, Jalani Bandele, Jason Nguyen
