@@ -2,6 +2,11 @@
 
 import { auth, db } from "@/firebase.config";
 import {
+  createWatchSession,
+  EmotionDataPoint,
+  saveEmotionDataPoint,
+} from "@/lib/server/emotions";
+import {
   analyzeWithVideoContext,
   ContextualEmotionResult,
 } from "@/lib/server/emotions-detector";
@@ -12,11 +17,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { listenToDocument } from "./actions";
 import { HeartRateData, LiveHeartRateGraph } from "./components/Graph";
-import {
-  createWatchSession,
-  EmotionDataPoint,
-  saveEmotionDataPoint,
-} from "@/lib/server/emotions";
 
 // Extend Window type for YouTube API
 declare global {

@@ -167,3 +167,27 @@ export async function getWatchSessionsByMovieId(
 
   return querySnapshot.docs.map((doc) => doc.data() as WatchSession);
 }
+
+export async function getWatchSessionById(
+  sessionId: string
+): Promise<{ session: WatchSession; emotions: EmotionDataPoint[] }> {
+  const firestore = initAdmin().firestore();
+  const docSnapshot = await firestore
+    .collection("Sessions")
+    .doc(sessionId)
+    .get();
+  const session: WatchSession = docSnapshot.data() as WatchSession;
+
+  const emotionsSnapshot = await firestore
+    .collection("Sessions")
+    .doc(sessionId)
+    .collection("Emotions")
+    .orderBy("capturedAt", "desc")
+    .get();
+
+  const emotions: EmotionDataPoint[] = emotionsSnapshot.docs.map(
+    (doc) => doc.data() as EmotionDataPoint
+  );
+
+  return { session, emotions };
+}
