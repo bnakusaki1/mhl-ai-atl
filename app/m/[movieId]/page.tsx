@@ -1,12 +1,17 @@
 "use client";
 
+import { auth, db } from "@/firebase.config";
+import {
+  analyzeWithVideoContext,
+  ContextualEmotionResult,
+} from "@/lib/server/emotions-detector";
+import { addToUserHistory } from "@/lib/server/history";
 import { Icons } from "@/public/assets";
 import { Icon } from "@iconify/react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { use, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { LiveHeartRateGraph } from "./components/Graph";
-import { addToUserHistory } from "@/lib/server/history";
-import { auth } from "@/firebase.config";
+import { listenToDocument } from "./actions";
+import { HeartRateData, LiveHeartRateGraph } from "./components/Graph";
 
 // Extend Window type for YouTube API
 declare global {
@@ -24,7 +29,14 @@ export default function MoviePage({
   const { movieId } = use(params);
   const playerRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [playerState, setPlayerState] = useState<string>("Unstarted");
+  const [emotionBoxRect, setEmotionBoxRect] = useState<DOMRect>();
+
+  useEffect(() => {
+    const profileButton = document.getElementById("emotion box");
+    if (profileButton) {
+      setEmotionBoxRect(profileButton.getBoundingClientRect());
+    }
+  }, [window.innerWidth, window.innerHeight]);
 
   const onStart = useCallback(async () => {
     try {
@@ -89,18 +101,6 @@ export default function MoviePage({
   }, [movieId]);
 
   const onPlayerStateChange = (event: any) => {
-    const states: { [key: number]: string } = {
-      [-1]: "Unstarted",
-      [0]: "Ended",
-      [1]: "Playing",
-      [2]: "Paused",
-      [3]: "Buffering",
-      [5]: "Video cued",
-    };
-
-    const state = states[event.data] || "Unknown";
-    setPlayerState(state);
-
     if (event.data === window.YT.PlayerState.PLAYING) {
       setIsPlaying(true);
     } else if (event.data === window.YT.PlayerState.PAUSED) {
@@ -125,6 +125,84 @@ export default function MoviePage({
     addToHistory();
   }, []);
 
+  useEffect(() => {
+    const unsubscribe = listenToDocument(
+      db,
+      "BPMReadings",
+      "readings",
+      (update) => {
+        console.log(update);
+      }
+    );
+
+    return () => unsubscribe();
+  }, []);
+
+  const [delta, setDelta] = useState(0);
+  const [contextualEmotionResponse, setContextualEmotionResponse] =
+    useState<ContextualEmotionResult>();
+  const [currentBpm, setCurrentBpm] = useState<number>(0);
+  const [data, setData] = useState<HeartRateData[]>([]);
+  const maxDataPoints = 30; // Keep last 30 readings
+
+  // Simulate receiving live heart rate data
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const interval = setInterval(() => {
+      // Simulate heart rate data (replace with your actual data source)
+      const now = Date.now();
+      const bpm = Math.floor(Math.random() * (100 - 60) + 60); // Random BPM between 60-100
+
+      const newDataPoint: HeartRateData = {
+        timestamp: new Date(now).toLocaleTimeString(),
+        bpm,
+        time: now,
+      };
+
+      setDelta(bpm - currentBpm);
+      setCurrentBpm(bpm);
+
+      setData((prevData) => {
+        const updated = [...prevData, newDataPoint];
+        // Keep only the last N data points
+        return updated.slice(-maxDataPoints);
+      });
+    }, 2000); // Update every 2 seconds
+
+    return () => clearInterval(interval);
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (Math.abs(delta) >= 10) {
+      const analyze = async () => {
+        // Get current video timestamp from YouTube player
+        let videoTimestamp = 0;
+        if (playerRef.current && playerRef.current.getCurrentTime) {
+          try {
+            videoTimestamp = playerRef.current.getCurrentTime();
+          } catch (error) {
+            console.error("Failed to get video timestamp:", error);
+          }
+        }
+
+        console.log(`Video timestamp: ${videoTimestamp}`);
+
+        const emotionalResponse = await analyzeWithVideoContext({
+          videoUrl: `https://www.youtube.com/embed/${movieId}?enablejsapi=1`,
+          currentBPM: currentBpm,
+          recentBPMHistory: data.map((point) => point.bpm),
+          timestamp: videoTimestamp,
+        });
+        setContextualEmotionResponse(emotionalResponse);
+
+        console.log(emotionalResponse);
+      };
+
+      analyze();
+    }
+  }, [delta]);
+
   return (
     <main className="pt-20 w-full max-w-5xl mx-auto pb-20">
       <div className="mb-10 flex items-center justify-between w-full">
@@ -145,14 +223,30 @@ export default function MoviePage({
             />
           </motion.div>
           <div>
-            <p className="font-bold text-4xl leading-none">101 BPM</p>
+            <p className="font-bold text-4xl leading-none">
+              {currentBpm ? `${currentBpm} BPM` : "N/A"}{" "}
+            </p>
             <p className="leading-none font-medium text-black/50 mt-[1px]">
               Heart rate
             </p>
           </div>
         </div>
-        <div>
-          <p className="font-semibold text-3xl text-right">Fear</p>
+        <div id="emotion box">
+          <p
+            className={`font-semibold text-3xl text-right ${
+              contextualEmotionResponse
+                ? `text-[${contextualEmotionResponse.color}]`
+                : ""
+            }`}
+            style={{
+              color: contextualEmotionResponse?.color,
+            }}
+          >
+            {contextualEmotionResponse
+              ? contextualEmotionResponse.emotion.charAt(0).toUpperCase() +
+                contextualEmotionResponse.emotion.slice(1)
+              : "N/A"}
+          </p>
           <p className="leading-none font-medium text-black/50 text-right">
             Emotion detected
           </p>
@@ -170,8 +264,32 @@ export default function MoviePage({
         />
       </div>
       <div className="mt-10">
-        <LiveHeartRateGraph />
+        <LiveHeartRateGraph data={data} />
       </div>
+      {contextualEmotionResponse && emotionBoxRect ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="p-4 bg-black/5 fixed w-64 rounded-3xl"
+          style={{
+            top: emotionBoxRect.top,
+            left: emotionBoxRect.right + 40
+          }}
+        >
+          <p className="font-semibold">AI Reasoning</p>
+          <AnimatePresence initial={false} mode="wait">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              key={contextualEmotionResponse.reasoning}
+              className="text-sm font-medium mt-2"
+            >
+              {contextualEmotionResponse.reasoning}
+            </motion.p>
+          </AnimatePresence>
+        </motion.div>
+      ) : undefined}
     </main>
   );
 }

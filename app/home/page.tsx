@@ -48,7 +48,7 @@ export default function HomePage() {
                   className="aspect-video rounded-2xl bg-black/5 overflow-hidden"
                 >
                   <Image
-                    src={movie.thumbnailPath}
+                    src={`https://img.youtube.com/vi/${movie.movieId}/maxresdefault.jpg`}
                     width={1000}
                     height={1000}
                     alt=""
@@ -69,3 +69,4 @@ export default function HomePage() {
     </main>
   );
 }
+

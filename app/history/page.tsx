@@ -60,7 +60,7 @@ export default function HistoryPage() {
                     className="aspect-video rounded-2xl bg-black/5 overflow-hidden max-w-sm"
                   >
                     <Image
-                      src={movie.thumbnailPath}
+                      src={`https://img.youtube.com/vi/${movie.movieId}/maxresdefault.jpg`}
                       width={1000}
                       height={1000}
                       alt=""

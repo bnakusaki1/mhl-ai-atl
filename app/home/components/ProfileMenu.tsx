@@ -168,7 +168,7 @@ function AgentPageHeaderMenu({
                         width={1000}
                         height={1000}
                         alt=""
-                        src={item.thumbnailPath}
+                        src={`https://img.youtube.com/vi/${item.movieId}/maxresdefault.jpg`}
                         className="w-full h-full object-cover"
                       />
                     </div>
